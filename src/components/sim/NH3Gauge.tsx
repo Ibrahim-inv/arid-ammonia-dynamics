@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useI18n } from "@/lib/i18n";
 
 interface Props {
   ppm: number;
@@ -8,6 +9,7 @@ interface Props {
 const MAX = 60; // gauge ceiling
 
 export function NH3Gauge({ ppm, risk }: Props) {
+  const { t } = useI18n();
   const pct = Math.min(1, ppm / MAX);
   const angle = -120 + pct * 240; // -120° to +120°
   const color = risk === "safe" ? "var(--color-safe)"
@@ -44,8 +46,8 @@ export function NH3Gauge({ ppm, risk }: Props) {
     <div className="panel p-6 flex flex-col items-center">
       <div className="w-full flex items-center justify-between mb-2">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Live Reading</div>
-          <div className="text-sm font-medium">NH₃ Concentration</div>
+          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{t("liveReading")}</div>
+          <div className="text-sm font-medium">{t("nh3Conc")}</div>
         </div>
         <div
           className="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider"
@@ -55,7 +57,7 @@ export function NH3Gauge({ ppm, risk }: Props) {
             border: `1px solid color-mix(in oklab, ${color} 45%, transparent)`,
           }}
         >
-          {risk}
+          {risk === "safe" ? t("riskSafe") : risk === "warning" ? t("riskWarning") : t("riskDangerous")}
         </div>
       </div>
 
@@ -102,9 +104,9 @@ export function NH3Gauge({ ppm, risk }: Props) {
       </div>
 
       <div className="mt-4 grid grid-cols-3 w-full gap-2 text-center font-mono text-[10px]">
-        <Legend label="SAFE" range="< 10" color="var(--color-safe)" active={risk === "safe"} />
-        <Legend label="WARN" range="10–25" color="var(--color-warning)" active={risk === "warning"} />
-        <Legend label="DANGER" range="> 25" color="var(--color-danger)" active={risk === "dangerous"} />
+        <Legend label={t("safe")} range="< 10" color="var(--color-safe)" active={risk === "safe"} />
+        <Legend label={t("warn")} range="10–25" color="var(--color-warning)" active={risk === "warning"} />
+        <Legend label={t("danger")} range="> 25" color="var(--color-danger)" active={risk === "dangerous"} />
       </div>
     </div>
   );

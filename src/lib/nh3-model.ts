@@ -20,6 +20,7 @@ export interface ModelOutput {
     aridSynergy: number;
   };
   explanation: string[];
+  explanationAr: string[];
 }
 
 // Baseline emission at T=20, RH=50, pH=7 ≈ 5 ppm
@@ -64,14 +65,40 @@ export function simulate({ T, RH, pH }: ModelInputs): ModelOutput {
   const risk: ModelOutput["risk"] =
     ppm < 10 ? "safe" : ppm <= 25 ? "warning" : "dangerous";
 
-  const explanation = buildExplanation({ T, RH, pH }, { fT, fRH, fpH, microbial, henry, aridSynergy }, ppm);
+  const factors = { fT, fRH, fpH, microbial, henry, aridSynergy };
+  const explanation = buildExplanation({ T, RH, pH }, factors, ppm);
+  const explanationAr = buildExplanationAr({ T, RH, pH }, factors, ppm);
 
   return {
     ppm,
     risk,
-    factors: { fT, fRH, fpH, microbial, henry, aridSynergy },
+    factors,
     explanation,
+    explanationAr,
   };
+}
+
+function buildExplanationAr(i: ModelInputs, f: ModelOutput["factors"], ppm: number): string[] {
+  const out: string[] = [];
+  if (i.T < 5) out.push(`عند ${i.T.toFixed(1)} °م، يُثبَّط نشاط إنزيم اليورياز الميكروبي إلى حد كبير؛ التطاير ضئيل.`);
+  else if (i.T > 50) out.push(`عند ${i.T.toFixed(1)} °م، يقلّل تمسّخ البروتين من النشاط الميكروبي، لكن فقدان الذوبانية وفق هنري يُبقي NH₃ في الطور الغازي.`);
+  else out.push(`وفق ساتون وآخرون (2013)، يتضاعف الانبعاث تقريباً كل 5 °م؛ معامل الحرارة الحالي = ×${f.fT.toFixed(2)}.`);
+
+  if (i.RH > 80) out.push(`الرطوبة ${i.RH.toFixed(0)}% — يذوب NH₃ الغازي في أغشية الماء المتكثفة، فيتحول التوازن نحو NH₄⁺ ويقل التركيز الجوي.`);
+  else if (i.RH < 20) out.push(`الرطوبة ${i.RH.toFixed(0)}% — غشاء الماء في الفرشة رقيق جداً لإذابة NH₃؛ التطاير دون كابح.`);
+  else out.push(`الرطوبة ${i.RH.toFixed(0)}% قريبة من المثلى للنشاط الميكروبي، مما يديم تحلل اليوريا.`);
+
+  if (i.pH <= 7) out.push(`pH الفرشة ${i.pH.toFixed(1)} (حمضي) — توازن NH₄⁺/NH₃ مقفل نحو NH₄⁺؛ الانبعاث مكبوت (ريس 1979).`);
+  else if (i.pH > 8) out.push(`عند pH ${i.pH.toFixed(1)} ينحرف التوازن بشدة نحو NH₃ الغازي — تطاير أسي (×${f.fpH.toFixed(1)}).`);
+  else out.push(`pH ${i.pH.toFixed(1)} قرب عتبة التحول؛ أي انجراف قاعدي بسيط سيرفع NH₃ بشكل كبير.`);
+
+  if (f.aridSynergy > 1.05) out.push(`⚠ تم رصد تآزر قاحل: انخفاض الرطوبة (<20%) مع ارتفاع الحرارة (>45 °م) يُسقط المصيدة المائية — معامل التآزر ×${f.aridSynergy.toFixed(2)}.`);
+
+  if (ppm < 10) out.push(`المتوقَّع ${ppm.toFixed(1)} ppm — ضمن الحدود المهنية الآمنة للطيور والبشر.`);
+  else if (ppm <= 25) out.push(`المتوقَّع ${ppm.toFixed(1)} ppm — عتبة التعرض المزمن؛ تهيج مخاطي وانخفاض في تحويل العلف.`);
+  else out.push(`المتوقَّع ${ppm.toFixed(1)} ppm — يتجاوز سقف 25 ppm؛ تدخل تهوية فوري مطلوب.`);
+
+  return out;
 }
 
 function buildExplanation(
