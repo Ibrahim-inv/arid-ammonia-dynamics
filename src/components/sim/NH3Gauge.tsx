@@ -104,9 +104,9 @@ export function NH3Gauge({ ppm, risk }: Props) {
       </div>
 
       <div className="mt-4 grid grid-cols-3 w-full gap-2 text-center font-mono text-[10px]">
-        <Legend label="SAFE" range="< 10" color="var(--color-safe)" active={risk === "safe"} />
-        <Legend label="WARN" range="10–25" color="var(--color-warning)" active={risk === "warning"} />
-        <Legend label="DANGER" range="> 25" color="var(--color-danger)" active={risk === "dangerous"} />
+        <Legend label={t("safe")} range="< 10" color="var(--color-safe)" active={risk === "safe"} />
+        <Legend label={t("warn")} range="10–25" color="var(--color-warning)" active={risk === "warning"} />
+        <Legend label={t("danger")} range="> 25" color="var(--color-danger)" active={risk === "dangerous"} />
       </div>
     </div>
   );
