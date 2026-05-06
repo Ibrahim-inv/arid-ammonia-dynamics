@@ -10,14 +10,14 @@ export function ExplanationPanel({ output }: { output: ModelOutput }) {
     <div className="panel p-5 space-y-4">
       <div className="flex items-center gap-2">
         <FlaskConical className="h-4 w-4 text-primary" />
-        <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Scientific Interpretation</div>
+        <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{t("scientific")}</div>
       </div>
 
       <ul className="space-y-2.5">
-        {output.explanation.map((line, i) => (
-          <li key={i} className="text-sm leading-relaxed text-foreground/90 pl-4 relative">
+        {lines.map((line, i) => (
+          <li key={i} className="text-sm leading-relaxed text-foreground/90 ps-4 relative">
             <span
-              className="absolute left-0 top-2 h-1.5 w-1.5 rounded-full"
+              className="absolute start-0 top-2 h-1.5 w-1.5 rounded-full"
               style={{ background: "var(--color-primary)" }}
             />
             {line}
@@ -28,20 +28,20 @@ export function ExplanationPanel({ output }: { output: ModelOutput }) {
       <div className="border-t border-border pt-4">
         <div className="flex items-center gap-2 mb-2">
           <BookOpen className="h-3.5 w-3.5 text-muted-foreground" />
-          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Active Multipliers</div>
+          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{t("multipliers")}</div>
         </div>
         <div className="grid grid-cols-3 gap-2 font-mono text-xs">
           <Factor label="Tᶠ" value={f.fT} />
           <Factor label="RHᶠ" value={f.fRH} />
           <Factor label="pHᶠ" value={f.fpH} />
-          <Factor label="Microbial" value={f.microbial} />
-          <Factor label="Henry" value={f.henry} />
-          <Factor label="Arid Synergy" value={f.aridSynergy} highlight={f.aridSynergy > 1.05} />
+          <Factor label={t("microbial")} value={f.microbial} />
+          <Factor label={t("henry")} value={f.henry} />
+          <Factor label={t("aridSynergy")} value={f.aridSynergy} highlight={f.aridSynergy > 1.05} />
         </div>
       </div>
 
       <div className="border-t border-border pt-3 text-[10px] text-muted-foreground leading-relaxed">
-        Refs: Sutton et al. 2013 · Reece et al. 1979 · Henry's Law of NH₃ solubility · Urease enzyme kinetics.
+        {t("refs")}
       </div>
     </div>
   );
