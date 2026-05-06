@@ -20,6 +20,7 @@ export interface ModelOutput {
     aridSynergy: number;
   };
   explanation: string[];
+  explanationAr: string[];
 }
 
 // Baseline emission at T=20, RH=50, pH=7 ≈ 5 ppm
