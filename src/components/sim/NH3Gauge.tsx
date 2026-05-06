@@ -9,6 +9,7 @@ interface Props {
 const MAX = 60; // gauge ceiling
 
 export function NH3Gauge({ ppm, risk }: Props) {
+  const { t } = useI18n();
   const pct = Math.min(1, ppm / MAX);
   const angle = -120 + pct * 240; // -120° to +120°
   const color = risk === "safe" ? "var(--color-safe)"
