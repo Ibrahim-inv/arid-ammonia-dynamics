@@ -1,7 +1,10 @@
 import { BookOpen, FlaskConical } from "lucide-react";
 import type { ModelOutput } from "@/lib/nh3-model";
+import { useI18n } from "@/lib/i18n";
 
 export function ExplanationPanel({ output }: { output: ModelOutput }) {
+  const { t, lang } = useI18n();
+  const lines = lang === "ar" ? output.explanationAr : output.explanation;
   const f = output.factors;
   return (
     <div className="panel p-5 space-y-4">
