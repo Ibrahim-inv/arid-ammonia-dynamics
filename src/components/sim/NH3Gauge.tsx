@@ -46,8 +46,8 @@ export function NH3Gauge({ ppm, risk }: Props) {
     <div className="panel p-6 flex flex-col items-center">
       <div className="w-full flex items-center justify-between mb-2">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Live Reading</div>
-          <div className="text-sm font-medium">NH₃ Concentration</div>
+          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{t("liveReading")}</div>
+          <div className="text-sm font-medium">{t("nh3Conc")}</div>
         </div>
         <div
           className="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider"
@@ -57,7 +57,7 @@ export function NH3Gauge({ ppm, risk }: Props) {
             border: `1px solid color-mix(in oklab, ${color} 45%, transparent)`,
           }}
         >
-          {risk}
+          {risk === "safe" ? t("riskSafe") : risk === "warning" ? t("riskWarning") : t("riskDangerous")}
         </div>
       </div>
 
