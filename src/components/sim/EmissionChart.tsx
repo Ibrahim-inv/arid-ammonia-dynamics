@@ -1,16 +1,27 @@
 import { useMemo } from "react";
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, ReferenceLine } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  ReferenceLine,
+} from "recharts";
 import { simulate } from "@/lib/nh3-model";
 
 interface Props {
-  T: number; RH: number; pH: number;
+  T: number;
+  RH: number;
+  pH: number;
   sweep: "T" | "RH" | "pH";
 }
 
 const config = {
-  T:  { min: -15, max: 60, step: 1.5, label: "Temperature (°C)" },
-  RH: { min: 0,   max: 100, step: 2, label: "Relative Humidity (%)" },
-  pH: { min: 1,   max: 14, step: 0.2, label: "Litter pH" },
+  T: { min: -15, max: 60, step: 1.5, label: "Temperature (°C)" },
+  RH: { min: 0, max: 100, step: 2, label: "Relative Humidity (%)" },
+  pH: { min: 1, max: 14, step: 0.2, label: "Litter pH" },
 };
 
 export function EmissionChart({ T, RH, pH, sweep }: Props) {
@@ -37,20 +48,46 @@ export function EmissionChart({ T, RH, pH, sweep }: Props) {
           </defs>
           <CartesianGrid stroke="var(--color-grid)" strokeDasharray="2 4" vertical={false} />
           <XAxis
-            dataKey="x" type="number" domain={[config[sweep].min, config[sweep].max]}
-            tick={{ fill: "var(--color-muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
+            dataKey="x"
+            type="number"
+            domain={[config[sweep].min, config[sweep].max]}
+            tick={{
+              fill: "var(--color-muted-foreground)",
+              fontSize: 10,
+              fontFamily: "var(--font-mono)",
+            }}
             stroke="var(--color-grid)"
-            label={{ value: config[sweep].label, position: "insideBottom", offset: -2, fill: "var(--color-muted-foreground)", fontSize: 10 }}
+            label={{
+              value: config[sweep].label,
+              position: "insideBottom",
+              offset: -2,
+              fill: "var(--color-muted-foreground)",
+              fontSize: 10,
+            }}
           />
           <YAxis
-            tick={{ fill: "var(--color-muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
-            stroke="var(--color-grid)" width={40}
-            label={{ value: "ppm", angle: -90, position: "insideLeft", fill: "var(--color-muted-foreground)", fontSize: 10 }}
+            tick={{
+              fill: "var(--color-muted-foreground)",
+              fontSize: 10,
+              fontFamily: "var(--font-mono)",
+            }}
+            stroke="var(--color-grid)"
+            width={40}
+            label={{
+              value: "ppm",
+              angle: -90,
+              position: "insideLeft",
+              fill: "var(--color-muted-foreground)",
+              fontSize: 10,
+            }}
           />
           <Tooltip
             contentStyle={{
-              background: "var(--color-card)", border: "1px solid var(--color-border)",
-              borderRadius: 8, fontFamily: "var(--font-mono)", fontSize: 12,
+              background: "var(--color-card)",
+              border: "1px solid var(--color-border)",
+              borderRadius: 8,
+              fontFamily: "var(--font-mono)",
+              fontSize: 12,
             }}
             labelFormatter={(l) => `${config[sweep].label.split(" ")[0]}: ${l}`}
             formatter={(v: number) => [`${v} ppm`, "NH₃"]}
@@ -58,7 +95,13 @@ export function EmissionChart({ T, RH, pH, sweep }: Props) {
           <ReferenceLine y={10} stroke="var(--color-safe)" strokeDasharray="3 3" />
           <ReferenceLine y={25} stroke="var(--color-danger)" strokeDasharray="3 3" />
           <ReferenceLine x={currentX} stroke="var(--color-accent)" strokeDasharray="2 2" />
-          <Area type="monotone" dataKey="ppm" stroke="var(--color-primary)" strokeWidth={2} fill="url(#ppmFill)" />
+          <Area
+            type="monotone"
+            dataKey="ppm"
+            stroke="var(--color-primary)"
+            strokeWidth={2}
+            fill="url(#ppmFill)"
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>

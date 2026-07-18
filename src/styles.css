@@ -45,13 +45,13 @@
   --card-foreground: oklch(0.96 0.01 200);
   --popover: oklch(0.22 0.025 230);
   --popover-foreground: oklch(0.96 0.01 200);
-  --primary: oklch(0.78 0.18 175);            /* cyan-mint instrument accent */
+  --primary: oklch(0.78 0.18 175); /* cyan-mint instrument accent */
   --primary-foreground: oklch(0.16 0.02 230);
   --secondary: oklch(0.28 0.03 230);
   --secondary-foreground: oklch(0.96 0.01 200);
   --muted: oklch(0.26 0.02 230);
   --muted-foreground: oklch(0.7 0.02 220);
-  --accent: oklch(0.7 0.18 60);               /* amber */
+  --accent: oklch(0.7 0.18 60); /* amber */
   --accent-foreground: oklch(0.16 0.02 230);
   --destructive: oklch(0.65 0.24 25);
   --destructive-foreground: oklch(0.98 0 0);
@@ -64,28 +64,43 @@
   --danger: oklch(0.65 0.24 25);
   --grid: oklch(0.32 0.03 230);
 
-  --gradient-instrument: radial-gradient(circle at 30% 20%, oklch(0.28 0.04 200) 0%, oklch(0.18 0.02 230) 60%);
+  --gradient-instrument: radial-gradient(
+    circle at 30% 20%,
+    oklch(0.28 0.04 200) 0%,
+    oklch(0.18 0.02 230) 60%
+  );
   --gradient-danger: linear-gradient(135deg, var(--safe), var(--warning) 50%, var(--danger));
   --shadow-glow: 0 0 24px -4px color-mix(in oklab, var(--primary) 50%, transparent);
-  --shadow-panel: 0 1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent) inset, 0 20px 40px -24px oklch(0 0 0 / 0.5);
+  --shadow-panel:
+    0 1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent) inset,
+    0 20px 40px -24px oklch(0 0 0 / 0.5);
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
-  html, body {
+  html,
+  body {
     background: var(--gradient-instrument);
     color: var(--color-foreground);
     font-family: var(--font-display);
     -webkit-font-smoothing: antialiased;
   }
-  .font-mono { font-family: var(--font-mono); }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
   .panel {
-    background: linear-gradient(180deg, color-mix(in oklab, var(--card) 96%, white 4%), var(--card));
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--card) 96%, white 4%),
+      var(--card)
+    );
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow-panel);
   }
-  .glow-text { text-shadow: 0 0 18px color-mix(in oklab, currentColor 60%, transparent); }
+  .glow-text {
+    text-shadow: 0 0 18px color-mix(in oklab, currentColor 60%, transparent);
+  }
 }
