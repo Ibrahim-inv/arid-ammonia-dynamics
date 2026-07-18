@@ -10,7 +10,9 @@ export function ExplanationPanel({ output }: { output: ModelOutput }) {
     <div className="panel p-5 space-y-4">
       <div className="flex items-center gap-2">
         <FlaskConical className="h-4 w-4 text-primary" />
-        <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{t("scientific")}</div>
+        <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+          {t("scientific")}
+        </div>
       </div>
 
       <ul className="space-y-2.5">
@@ -28,7 +30,9 @@ export function ExplanationPanel({ output }: { output: ModelOutput }) {
       <div className="border-t border-border pt-4">
         <div className="flex items-center gap-2 mb-2">
           <BookOpen className="h-3.5 w-3.5 text-muted-foreground" />
-          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{t("multipliers")}</div>
+          <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            {t("multipliers")}
+          </div>
         </div>
         <div className="grid grid-cols-3 gap-2 font-mono text-xs">
           <Factor label="Tᶠ" value={f.fT} />
@@ -47,17 +51,30 @@ export function ExplanationPanel({ output }: { output: ModelOutput }) {
   );
 }
 
-function Factor({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
+function Factor({
+  label,
+  value,
+  highlight,
+}: {
+  label: string;
+  value: number;
+  highlight?: boolean;
+}) {
   return (
     <div
       className="rounded-md border px-2.5 py-1.5"
       style={{
-        background: highlight ? "color-mix(in oklab, var(--color-danger) 15%, transparent)" : "color-mix(in oklab, var(--color-foreground) 4%, transparent)",
+        background: highlight
+          ? "color-mix(in oklab, var(--color-danger) 15%, transparent)"
+          : "color-mix(in oklab, var(--color-foreground) 4%, transparent)",
         borderColor: highlight ? "var(--color-danger)" : "var(--color-border)",
       }}
     >
       <div className="text-[10px] text-muted-foreground">{label}</div>
-      <div className="tabular-nums" style={{ color: highlight ? "var(--color-danger)" : "var(--color-primary)" }}>
+      <div
+        className="tabular-nums"
+        style={{ color: highlight ? "var(--color-danger)" : "var(--color-primary)" }}
+      >
         ×{value.toFixed(2)}
       </div>
     </div>
